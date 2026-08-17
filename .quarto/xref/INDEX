@@ -1,0 +1,17 @@
+{
+  "analysis/s0_analysis.qmd": {
+    "s0_analysis.html": "224e3a8f"
+  },
+  "index.qmd": {
+    "index.html": "58777a69"
+  },
+  "notes/runs/2026-08-08_Test_MagneticField.md": {
+    "2026-08-08_Test_MagneticField.html": "a091e66d"
+  },
+  "notes/runs/index.md": {
+    "index.html": "23fbc189"
+  },
+  "notebooks/s0_analysis.qmd": {
+    "s0_analysis.html": "a7c8c614"
+  }
+}

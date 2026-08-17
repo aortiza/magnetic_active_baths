@@ -1,0 +1,71 @@
+---
+title: "Calibration of Magnetic Sucseptibility Simulations"
+date: 2026-08-09
+author: "Antonio Ortiz-Ambriz"
+---
+
+# Introduction 
+
+```{python}
+#| label: load-data
+#| echo: false
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from ovito.io import import_file
+
+pipeline = import_file("data/2026-08-08_Test_MagneticField/test.lammpstrj")
+
+# Iterate through all timesteps
+
+trj = []
+for frame in range(pipeline.num_frames):
+    data = pipeline.compute(frame)
+
+    # Access global properties
+    timestep = data.attributes.get("Timestep", frame)
+    cell = data.cell # Simulation box matrices
+
+    # Access atom-wise properties as NumPy arrays
+    atom_ids = data.particles.identifiers.array
+    positions = data.particles.positions.array
+    forces = data.particles["Force"].array
+
+    print(f"Frame {timestep}: Parsed {data.particles.count} atoms.")
+
+    trj.append(
+      pd.DataFrame(
+        {
+          'step': timestep,
+          'ids': atom_ids,
+          'x': positions[:, 0],
+          'y': positions[:, 1],
+          'z': positions[:, 2],
+          'fx': forces[:, 0],
+          'fy': forces[:, 1],
+          'fz': forces[:, 2],
+
+        }))
+
+trj = pd.concat(trj)
+trj = (
+  trj
+  .set_index(["ids","step"])
+  .sort_index()
+)
+
+```
+
+# Plot distance 
+
+```{python}
+#| label: load-data
+#| echo: false
+
+plt.plot(trj.loc[2].x, trj.loc[2].fx)
+
+plt.show()
+
+```

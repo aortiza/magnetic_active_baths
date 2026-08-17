@@ -1,0 +1,33 @@
+---
+title: "Active Baths"
+listing:
+  contents: 
+    - "notebooks/*.ipynb"
+    - "notebooks/*.qmd"
+  type: default # Options: grid, default, table
+  sort: "date desc"
+  categories: true
+---
+
+Welcome to my notes on active baths.
+
+This is a structured project organized to keep track of the simulations that are run, along with the results of these simulations. This is a little cumbersome but hopefully we will be thanked by our future selves. 
+
+The basic structure is the following: 
+```text
+active_fuel/
+├── data/
+│   ├── run_folder1
+│       ├── in.lammps  -> copy of the lammps input script
+│       ├── log.lammps  -> log of the lammps run
+│       ├── manifest.yaml  -> some parameters of the run script 
+│       ├── stdout.log  -> terminal output 
+│       ├── test.lammpstrj  -> dumps 
+│   ├── run_folder2
+│   └── state.ovito
+
+├── scripts/
+│   └── script1.lmpin -> lammps scripts
+├── _quarto.yml
+└── index.qmd
+```

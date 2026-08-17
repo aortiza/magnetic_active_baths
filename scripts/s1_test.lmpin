@@ -1,0 +1,53 @@
+### ---preamble--- ###
+log ./data/script0/test.log
+units micro 
+atom_style hybrid dipole sphere bond 
+boundary p p s
+
+neighbor 1.0 bin 
+#neigh_modify every 1 delay 1 check yes
+pair_style lj/cut/dipole/cut 1 20 
+
+### ---Create Particles and Region--- ###
+region 1 block -27 27 -27 27 -0.1 0.1
+
+create_box 1 1 
+create_atoms 1 random 150 1235 NULL
+pair_coeff 1 1 0.01 2.49451641079295 2.8 20
+group Atoms type 1 
+mass * 1
+
+minimize 1.0e-4 1.0e-6 100 1000
+
+set group Atoms dipole 0.0 0.0 0.0001
+
+
+### ---Variables--- ###
+
+## magnetic field
+variable Bmag atom 3.07269489288908e-04
+variable freq atom 3.7e-06
+variable theta atom 0.2617993877991494
+variable phi atom 0.0
+
+variable fieldx atom v_Bmag*cos(v_freq*time*2*PI+v_phi)*sin(v_theta)
+variable fieldy atom v_Bmag*sin(v_freq*time*2*PI+v_phi)*sin(v_theta)
+variable fieldz atom v_Bmag*cos(v_theta)
+
+### ---Fixes--- ###
+
+#fix 	1 Atoms setdipole v_fieldx v_fieldy v_fieldz 0
+fix 	1 Atoms set 1 0 group all dipole v_fieldx v_fieldy v_fieldz
+
+#fix 	2 Atoms brownian 300 921259 gamma_t 0.001
+fix 	2 Atoms brownian 300 92125 gamma_t 1000
+
+#fix     3 Atoms addforce 0 0 -0.00011264159515495175 
+fix 	6 Atoms wall/lj126 zlo -2.0 0.01 1.247258205396475  1.4 zhi 2.0 0.01 1.247258205396475  1.4  
+
+### ---Run Commands--- ###
+timestep 	100.0 
+dump 	3 all custom 333 ./data/script0/test.lammpstrj id type x	 y	 z mux muy muz
+thermo_style 	custom step atoms
+thermo 	100  
+run 	60000 
