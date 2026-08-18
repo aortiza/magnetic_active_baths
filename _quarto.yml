@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: _site
   execute-dir: project
+  render:
+    - "*.qmd"
+    - "!index_sim.qmd"
 
 website:
   title: "Notes on Active Fuel"

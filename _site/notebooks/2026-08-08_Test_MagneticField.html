@@ -225,7 +225,7 @@ window.Quarto = {
 <h1>Introduction</h1>
 <p>I’m trying to use LAMMPS to simulate the dynamics of superparamagnetic particles. In the experiments, the particles have a dipole moment given by: <span class="math display">\[\vec{m} = \frac{V\chi \vec{B}}{\mu_0}\]</span> where <span class="math inline">\(V\)</span> is the particle volume, <span class="math inline">\(\chi\)</span> is the magnetic susceptibility, <span class="math inline">\(\vec{B}\)</span> is the magnetic field, and <span class="math inline">\(\mu_0\)</span> is the magnetic constant. This note, along with the script [scripts/s0_test.lmpin], describe how to ensure that the dipole moments in LAMMPS have the correct magnitude in <em>micro</em> units.</p>
 <p>The LAMMPS script is run by the following cell:</p>
-<div id="9e9e8795" class="cell" data-execution_count="1">
+<div id="d0b8e278" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> python3 run_sim.py <span class="op">\</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>script scripts<span class="op">/</span>s0_test.lmpin <span class="op">\</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>data<span class="op">-</span><span class="bu">dir</span> data<span class="op">/</span> <span class="op">\</span></span>
@@ -241,6 +241,7 @@ window.Quarto = {
 </div>
 </div>
 <p>This script runs a simulation that consists of two particles, one fixed and the other moving. If the moment is calculated properly, that script should produce a force in on the moving particle, whose magnitude goes as the magnetic dipole force. <span class="math display">\[F = \frac{3\mu_0}{4 \pi r^4} m^2\]</span> The force reported in the data is in pN.</p>
+<p>LAMMPS has a built in dipole dipole interaction, but it is designed to simulate electric dipoles. For two electric dipoles pointing up <span class="math inline">\(\vec{p} = p \hat{z}\)</span>, the magnitude of the electric interaction force is <span class="math display">\[F_E = \frac{3}{4\pi\epsilon_0 r^4}{p^2}\]</span> If what we want is to calculate the magnetic dipole interaction, we need to equate these forces, which leads to <span class="math display">\[\mu_0 m^2 = \frac{p^2}{\epsilon_0}\]</span> Therefore, the dipole <span class="math inline">\(p\)</span> which is what is set in LAMMPS, should be calculated as <span class="math inline">\(p = m\sqrt{\mu_0 \epsilon_0} = \frac{m}{c}\)</span> where <span class="math inline">\(c\)</span> is the speed of light.</p>
 <p>To calculate the magnitude of the dipole moment, we can use the following code snippet:</p>
 <pre class="LAMMPS"><code>
 ## magnetic dipole prefactor
@@ -254,10 +255,10 @@ variable pref equal v_V * v_chi / v_mu0 / v_c
 ## Bmag can be made dynamic
 variable Bmag equal 1e-6 # pg/us/pC
 
-## the prefator is evaluated using ${} to ensure preeval.
+## the prefactor is evaluated using ${} to ensure preeval.
 variable dipole atom ${pref} * v_Bmag
 </code></pre>
-<p>To ensure consistent units, everything should be in pN, <span class="math inline">\(\mu\)</span>m, <span class="math inline">\(\mu\)</span>s, and pC, as desribed in (units)[https://docs.lammps.org/units.html]</p>
+<p>To ensure consistent units, everything should be in pN, <span class="math inline">\(\mu\)</span>m, <span class="math inline">\(\mu\)</span>s, and pC, as desribed in <a href="https://docs.lammps.org/units.html">Units</a></p>
 <p>The following python chunk reads the data:</p>
 <div id="load-data" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -329,7 +330,7 @@ variable dipole atom ${pref} * v_Bmag
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="s0_analysis_files/figure-html/plot-force-output-1.png" id="plot-force" width="434" height="347" class="figure-img"></p>
+<p><img src="2026-08-08_Test_MagneticField_files/figure-html/plot-force-output-1.png" id="plot-force" width="434" height="347" class="figure-img"></p>
 </figure>
 </div>
 </div>

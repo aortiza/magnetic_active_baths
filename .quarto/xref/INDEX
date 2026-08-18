@@ -16,5 +16,14 @@
   },
   "index.md": {
     "index.html": "5bea3e45"
+  },
+  "index_sim.qmd": {
+    "index_sim.html": "84e5f145"
+  },
+  "templates/template.qmd": {
+    "template.html": "e74bde45"
+  },
+  "notebooks/2026-08-08_Test_MagneticField.qmd": {
+    "2026-08-08_Test_MagneticField.html": "49f66b7c"
   }
 }

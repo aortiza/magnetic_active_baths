@@ -16,6 +16,7 @@ The LAMMPS script is run by the following cell:
   --run-id 2026-08-08_Test_MagneticField \
   --notebook notebooks/2026-08-08_Test_MagneticField.qmd \
   --params
+```
 
 The following python chunk reads the data:
 

@@ -26,6 +26,13 @@ This script runs a simulation that consists of two particles, one fixed and the 
 $$F = \frac{3\mu_0}{4 \pi r^4} m^2$$
 The force reported in the data is in pN.
 
+LAMMPS has a built in dipole dipole interaction, but it is designed to simulate electric dipoles. For two electric dipoles pointing up $\vec{p} = p \hat{z}$, the magnitude of the electric interaction force is 
+$$F_E = \frac{3}{4\pi\epsilon_0 r^4}{p^2}$$
+If what we want is to calculate the magnetic dipole interaction, we need to 
+equate these forces, which leads to 
+$$\mu_0 m^2 = \frac{p^2}{\epsilon_0}$$
+Therefore, the dipole $p$ which is what is set in LAMMPS, should be calculated as $p = m\sqrt{\mu_0 \epsilon_0} = \frac{m}{c}$ where $c$ is the speed of light.
+
 To calculate the magnitude of the dipole moment, we can use the following code snippet:
 ```{.LAMMPS}
 
@@ -40,11 +47,11 @@ variable pref equal v_V * v_chi / v_mu0 / v_c
 ## Bmag can be made dynamic
 variable Bmag equal 1e-6 # pg/us/pC
 
-## the prefator is evaluated using ${} to ensure preeval.
+## the prefactor is evaluated using ${} to ensure preeval.
 variable dipole atom ${pref} * v_Bmag
 
 ```
-To ensure consistent units, everything should be in pN, $\mu$m, $\mu$s, and pC, as desribed in (units)[https://docs.lammps.org/units.html]
+To ensure consistent units, everything should be in pN, $\mu$m, $\mu$s, and pC, as desribed in [Units](https://docs.lammps.org/units.html)
 
 The following python chunk reads the data:
 ```{python}

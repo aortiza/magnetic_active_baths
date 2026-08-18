@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-08-09">
+<meta name="author" content="Antonio Ortiz-Ambriz">
+<meta name="dcterms.date" content="2026-08-18">
 
-<title>test_magneticfield – Notes on Active Fuel</title>
+<title>Template for running simulations – Notes on Active Fuel</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,26 +28,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -85,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Notes on Active Fuel</span>
     </a>
   </div>
@@ -96,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -115,12 +151,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#run-2026-08-08_test_magneticfield" id="toc-run-2026-08-08_test_magneticfield" class="nav-link active" data-scroll-target="#run-2026-08-08_test_magneticfield">Run: 2026-08-08_Test_MagneticField</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
-  <li><a href="#purpose-hypothesis" id="toc-purpose-hypothesis" class="nav-link" data-scroll-target="#purpose-hypothesis">Purpose &amp; Hypothesis</a></li>
-  <li><a href="#key-parameters" id="toc-key-parameters" class="nav-link" data-scroll-target="#key-parameters">Key Parameters</a></li>
-  <li><a href="#results-figures" id="toc-results-figures" class="nav-link" data-scroll-target="#results-figures">Results &amp; Figures</a></li>
-  <li><a href="#observations-conclusions" id="toc-observations-conclusions" class="nav-link" data-scroll-target="#observations-conclusions">Observations &amp; Conclusions</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -130,17 +163,24 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
+<h1 class="title">Template for running simulations</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Antonio Ortiz-Ambriz </p>
+          </div>
+  </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 9, 2026</p>
+      <p class="date">August 18, 2026</p>
     </div>
   </div>
   
@@ -152,26 +192,102 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="run-2026-08-08_test_magneticfield" class="level1">
-<h1>Run: 2026-08-08_Test_MagneticField</h1>
-<section id="purpose-hypothesis" class="level2">
-<h2 class="anchored" data-anchor-id="purpose-hypothesis">Purpose &amp; Hypothesis</h2>
-<!-- Write what you are testing here -->
-</section>
-<section id="key-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="key-parameters">Key Parameters</h2>
-<ul>
-<li>None</li>
-</ul>
-</section>
-<section id="results-figures" class="level2">
-<h2 class="anchored" data-anchor-id="results-figures">Results &amp; Figures</h2>
-<!-- Link plots saved in data storage -->
-<!-- Example: ![Plot](file:///Users/aortiza/Library/CloudStorage/OneDrive-InstitutoTecnologicoydeEstudiosSuperioresdeMonterrey/Research/OngoingProjects/ActiveBaths/active_fuel/data/2026-08-08_Test_MagneticField/figures/density.png) -->
-</section>
-<section id="observations-conclusions" class="level2">
-<h2 class="anchored" data-anchor-id="observations-conclusions">Observations &amp; Conclusions</h2>
-<!-- Document your findings here -->
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Describe what I’m trying to do</p>
+<p>The LAMMPS script is run by the following cell:</p>
+<div id="4ba81413" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> python3 run_sim.py <span class="op">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>script scripts<span class="op">/</span>s0_test.lmpin <span class="op">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>data<span class="op">-</span><span class="bu">dir</span> data<span class="op">/</span> <span class="op">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>run<span class="op">-</span><span class="bu">id</span> <span class="dv">2026</span><span class="op">-</span><span class="dv">0</span><span class="er">8</span><span class="op">-</span><span class="dv">0</span><span class="er">8_Test_MagneticField</span> <span class="op">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>notebook notebooks<span class="op">/</span><span class="dv">2026</span><span class="op">-</span><span class="dv">0</span><span class="er">8</span><span class="op">-</span><span class="dv">0</span><span class="er">8_Test_MagneticField</span>.qmd <span class="op">\</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[+] Master index updated at index_sim.qmd
+[+] Launching 2026-08-08_Test_MagneticField
+[+] Run folder: /Users/aortiza/Library/CloudStorage/OneDrive-InstitutoTecnologicoydeEstudiosSuperioresdeMonterrey/Research/OngoingProjects/ActiveBaths/active_fuel/data/2026-08-08_Test_MagneticField
+[+] Simulation finished successfully.
+[+] Master index updated at index_sim.qmd</code></pre>
+</div>
+</div>
+<p>The following python chunk reads the data:</p>
+<div id="load-data" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ovito.io <span class="im">import</span> import_file</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>pipeline <span class="op">=</span> import_file(<span class="st">"data/2026-08-08_Test_MagneticField/test.lammpstrj"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate through all timesteps</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>trj <span class="op">=</span> []</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> frame <span class="kw">in</span> <span class="bu">range</span>(pipeline.num_frames):</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pipeline.compute(frame)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Access global properties</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    timestep <span class="op">=</span> data.attributes.get(<span class="st">"Timestep"</span>, frame)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    cell <span class="op">=</span> data.cell <span class="co"># Simulation box matrices</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Access atom-wise properties as NumPy arrays</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    atom_ids <span class="op">=</span> data.particles.identifiers.array</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    positions <span class="op">=</span> data.particles.positions.array</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    forces <span class="op">=</span> data.particles[<span class="st">"Force"</span>].array</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    trj.append(</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>      pd.DataFrame(</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>          <span class="st">'step'</span>: timestep,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>          <span class="st">'ids'</span>: atom_ids,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>          <span class="st">'x'</span>: positions[:, <span class="dv">0</span>],</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>          <span class="st">'y'</span>: positions[:, <span class="dv">1</span>],</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>          <span class="st">'z'</span>: positions[:, <span class="dv">2</span>],</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>          <span class="st">'fx'</span>: forces[:, <span class="dv">0</span>],</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>          <span class="st">'fy'</span>: forces[:, <span class="dv">1</span>],</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>          <span class="st">'fz'</span>: forces[:, <span class="dv">2</span>],</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        }))</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>trj <span class="op">=</span> pd.concat(trj)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>trj <span class="op">=</span> (</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  trj</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  .set_index([<span class="st">"ids"</span>,<span class="st">"step"</span>])</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  .sort_index()</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>Here is a chunk that makes a plot</p>
+<div id="cell-plot-force" class="cell" data-caption="Force vs distance calculated by LAMMPS compared to analytical calculation" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pint <span class="im">as</span> pt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ureg <span class="op">=</span> pt.UnitRegistry()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>mu0 <span class="op">=</span> <span class="dv">4</span><span class="op">*</span>np.pi<span class="op">*</span><span class="fl">1e-7</span> <span class="op">*</span> ureg(<span class="st">"N / A**2"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="fl">1.4</span><span class="op">*</span>ureg.um</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> <span class="dv">4</span><span class="op">/</span><span class="dv">3</span> <span class="op">*</span> np.pi <span class="op">*</span> r<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> <span class="dv">1</span><span class="op">*</span>ureg(<span class="st">"mT"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>chi <span class="op">=</span> <span class="fl">0.4</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> (V<span class="op">*</span>B<span class="op">*</span>chi<span class="op">/</span>mu0)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>pf <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> mu0 <span class="op">/</span> (<span class="dv">4</span> <span class="op">*</span> np.pi) <span class="op">*</span> m<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.figure(dpi<span class="op">=</span><span class="dv">150</span>, figsize<span class="op">=</span>[<span class="dv">3</span>,<span class="dv">2</span>])</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>fx <span class="op">=</span> pf.to(<span class="st">"pg * um**5 / us**2"</span>).magnitude<span class="op">/</span>(trj.loc[<span class="dv">2</span>].x)<span class="op">**</span><span class="dv">4</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.plot(trj.loc[<span class="dv">2</span>].x, trj.loc[<span class="dv">2</span>].fx, <span class="st">'+-'</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.plot(trj.loc[<span class="dv">2</span>].x, fx)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"distance </span><span class="dv">$\m</span><span class="vs">u{}</span><span class="dv">$</span><span class="vs">m"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"force pN"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="template_files/figure-html/plot-force-output-1.png" id="plot-force" width="434" height="347" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
@@ -251,7 +367,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/aortiza\.github\.io\/magnetic_active_baths\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
