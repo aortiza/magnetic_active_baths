@@ -25,9 +25,10 @@ active_fuel/
 │       ├── test.lammpstrj  -> dumps 
 │   ├── run_folder2
 │   └── state.ovito
-
+├── notebooks/ -> running and analysis notebook for lammps scripts 
+│   └── s0_notebook.qmd 
 ├── scripts/
-│   └── script1.lmpin -> lammps scripts
+│   └── script0.lmpin -> lammps scripts 
 ├── _quarto.yml
 └── index.qmd
 ```

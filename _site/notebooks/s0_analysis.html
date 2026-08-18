@@ -225,19 +225,19 @@ window.Quarto = {
 <h1>Introduction</h1>
 <p>I’m trying to use LAMMPS to simulate the dynamics of superparamagnetic particles. In the experiments, the particles have a dipole moment given by: <span class="math display">\[\vec{m} = \frac{V\chi \vec{B}}{\mu_0}\]</span> where <span class="math inline">\(V\)</span> is the particle volume, <span class="math inline">\(\chi\)</span> is the magnetic susceptibility, <span class="math inline">\(\vec{B}\)</span> is the magnetic field, and <span class="math inline">\(\mu_0\)</span> is the magnetic constant. This note, along with the script [scripts/s0_test.lmpin], describe how to ensure that the dipole moments in LAMMPS have the correct magnitude in <em>micro</em> units.</p>
 <p>The LAMMPS script is run by the following cell:</p>
-<div id="eda35a6a" class="cell" data-execution_count="1">
+<div id="9e9e8795" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> python3 run_sim.py <span class="op">\</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>script scripts<span class="op">/</span>s0_test.lmpin <span class="op">\</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>data<span class="op">-</span><span class="bu">dir</span> data<span class="op">/</span> <span class="op">\</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>run<span class="op">-</span><span class="bu">id</span> <span class="dv">2026</span><span class="op">-</span><span class="dv">0</span><span class="er">8</span><span class="op">-</span><span class="dv">0</span><span class="er">8_Test_MagneticField</span> <span class="op">\</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>notebook notebooks<span class="op">/</span><span class="dv">2026</span><span class="op">-</span><span class="dv">0</span><span class="er">8</span><span class="op">-</span><span class="dv">0</span><span class="er">8_Test_MagneticField</span>.qmd <span class="op">\</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">--</span>params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[!] Note already exists at ./notes/runs/2026-08-08_Test_MagneticField.md, skipping creation.
-[+] Master index updated at ./notes/runs/index.md
+<pre><code>[+] Master index updated at index_sim.qmd
 [+] Launching 2026-08-08_Test_MagneticField
 [+] Run folder: /Users/aortiza/Library/CloudStorage/OneDrive-InstitutoTecnologicoydeEstudiosSuperioresdeMonterrey/Research/OngoingProjects/ActiveBaths/active_fuel/data/2026-08-08_Test_MagneticField
 [+] Simulation finished successfully.
-[+] Master index updated at ./notes/runs/index.md</code></pre>
+[+] Master index updated at index_sim.qmd</code></pre>
 </div>
 </div>
 <p>This script runs a simulation that consists of two particles, one fixed and the other moving. If the moment is calculated properly, that script should produce a force in on the moving particle, whose magnitude goes as the magnetic dipole force. <span class="math display">\[F = \frac{3\mu_0}{4 \pi r^4} m^2\]</span> The force reported in the data is in pN.</p>

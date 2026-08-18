@@ -19,7 +19,6 @@ def scan_manifests(data_dir: str) -> list:
         except Exception as e:
             print(f"[!] Warning: Failed to read {path}: {e}")
 
-    # Sort runs newest first by start date
     manifests.sort(key=lambda x: x.get("date_started", ""), reverse=True)
     return manifests
 
@@ -29,8 +28,8 @@ def format_params(params: dict) -> str:
         return "-"
     return ", ".join([f"`{k}={v}`" for k, v in params.items()])
 
-def generate_markdown(manifests: list, notes_dir: str) -> str:
-    """Builds the Markdown index table string."""
+def generate_markdown(manifests: list, notebooks_dir: str, output_path: str) -> str:
+    """Builds the Master Index markdown string with links to Quarto notebooks."""
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     
     status_badge = {
@@ -44,9 +43,11 @@ def generate_markdown(manifests: list, notes_dir: str) -> str:
         "",
         f"*Last updated: {now} | Total simulations logged: {len(manifests)}*",
         "",
-        "| Run ID | Date Started | Status | Parameters | Note File |",
+        "| Run ID | Date Started | Status | Parameters | Quarto Notebook |",
         "| :--- | :--- | :---: | :--- | :---: |"
     ]
+
+    index_dir = os.path.dirname(os.path.abspath(output_path))
 
     for m in manifests:
         run_id = m.get("run_id", "N/A")
@@ -54,12 +55,22 @@ def generate_markdown(manifests: list, notes_dir: str) -> str:
         status = status_badge.get(m.get("status"), m.get("status", "Unknown"))
         params = format_params(m.get("parameters", {}))
         
-        # Check if corresponding Markdown note file exists
-        note_filename = f"{run_id}.md"
-        note_path = os.path.join(notes_dir, "runs", note_filename)
+        # Determine notebook location
+        nb_path = m.get("notebook")
         
-        if os.path.exists(note_path):
-            note_link = f"[{run_id}](runs/{note_filename})"
+        # Fallback check inside notebooks_dir if not stored in manifest
+        if not nb_path or not os.path.exists(nb_path):
+            for ext in [".qmd", ".ipynb", ".md"]:
+                candidate = os.path.join(notebooks_dir, f"{run_id}{ext}")
+                if os.path.exists(candidate):
+                    nb_path = candidate
+                    break
+
+        # Generate relative link to the notebook
+        if nb_path and os.path.exists(nb_path):
+            rel_link = os.path.relpath(nb_path, start=index_dir)
+            nb_name = os.path.basename(nb_path)
+            note_link = f"[{nb_name}]({rel_link})"
         else:
             note_link = "—"
 
@@ -68,37 +79,24 @@ def generate_markdown(manifests: list, notes_dir: str) -> str:
     lines.append("")
     return "\n".join(lines)
 
-
-def update_index(data_dir: str = "./data_store", notes_dir: str = "./notes", output: str = "index.md"):
-    """Scans manifest files and regenerates the Master Markdown index."""
+def update_index(data_dir: str = "./data", notebooks_dir: str = "./notebooks", output: str = "index.md"):
+    """Scans manifest files and regenerates the Master Index markdown file."""
     manifests = scan_manifests(data_dir)
-    markdown_content = generate_markdown(manifests, notes_dir)
+    markdown_content = generate_markdown(manifests, notebooks_dir, output)
     
-    output_path = os.path.join(notes_dir, output)
-    os.makedirs(notes_dir, exist_ok=True)
-    
-    with open(output_path, "w") as f:
+    os.makedirs(os.path.dirname(os.path.abspath(output)), exist_ok=True)
+    with open(output, "w") as f:
         f.write(markdown_content)
-    print(f"[+] Master index updated at {output_path}")
+    print(f"[+] Master index updated at {output}")
 
 def main():
     parser = argparse.ArgumentParser(description="Build Master Markdown Index from manifest files.")
-    parser.add_argument("-d", "--data-dir", default="./data_store", help="Path to data storage root")
-    parser.add_argument("-n", "--notes-dir", default="./notes", help="Path to Neovim Markdown notes root")
-    parser.add_argument("-o", "--output", default="index.md", help="Filename of the master index")
+    parser.add_argument("-d", "--data-dir", default="./data", help="Path to data storage root")
+    parser.add_argument("-nb", "--notebooks-dir", default="./notebooks", help="Path to Quarto notebooks directory")
+    parser.add_argument("-o", "--output", default="index.md", help="Path of the master index file")
 
     args = parser.parse_args()
-
-    manifests = scan_manifests(args.data_dir)
-    markdown_content = generate_markdown(manifests, args.notes_dir)
-
-    output_path = os.path.join(args.notes_dir, args.output)
-    os.makedirs(args.notes_dir, exist_ok=True)
-
-    with open(output_path, "w") as f:
-        f.write(markdown_content)
-
-    print(f"[+] Master index written to {output_path} ({len(manifests)} runs found)")
+    update_index(data_dir=args.data_dir, notebooks_dir=args.notebooks_dir, output=args.output)
 
 if __name__ == "__main__":
     main()
