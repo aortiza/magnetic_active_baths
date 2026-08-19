@@ -1,9 +1,7 @@
 ---
 title: "Active Baths"
 listing:
-  contents: 
-    - "notebooks/*.ipynb"
-    - "notebooks/*.qmd"
+  contents: "notebooks"
   type: default # Options: grid, default, table
   sort: "date desc"
   categories: true

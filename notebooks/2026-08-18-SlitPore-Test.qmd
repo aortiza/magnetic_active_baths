@@ -1,12 +1,12 @@
 ---
-title: "Template for running simulations"
+title: "Test of the slit pore simulation"
 date: today
 author: "Antonio Ortiz-Ambriz"
 ---
 
 # Introduction 
 
-Here I'll run a simulation of a small version of the slit pore experiment. 
+Here I'll run a simulation of a small version of the slit pore experiment. t 
 
 The LAMMPS script is run by the following cell: 
 ```{python}
@@ -23,13 +23,14 @@ The following python chunk reads the data:
 ```{python}
 #| label: load-data
 #| echo: true
+#| eval: true
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from ovito.io import import_file
 
-pipeline = import_file("data/2026-08-08_Test_MagneticField/test.lammpstrj")
+pipeline = import_file("data/2026-08-18-Slitpore-Test/test.lammpstrj")
 
 # Iterate through all timesteps
 
@@ -44,7 +45,6 @@ for frame in range(pipeline.num_frames):
     # Access atom-wise properties as NumPy arrays
     atom_ids = data.particles.identifiers.array
     positions = data.particles.positions.array
-    forces = data.particles["Force"].array
 
     trj.append(
       pd.DataFrame(
@@ -54,10 +54,6 @@ for frame in range(pipeline.num_frames):
           'x': positions[:, 0],
           'y': positions[:, 1],
           'z': positions[:, 2],
-          'fx': forces[:, 0],
-          'fy': forces[:, 1],
-          'fz': forces[:, 2],
-
         }))
 
 trj = pd.concat(trj)
@@ -75,6 +71,7 @@ Here is a chunk that makes a plot
 #| label: plot-force
 #| caption: "Force vs distance calculated by LAMMPS compared to analytical calculation"
 #| echo: true
+#| eval: false
 
 import pint as pt
 ureg = pt.UnitRegistry()

@@ -1,0 +1,177 @@
+---
+title: "Check drag coefficient"
+date: today
+author: "Antonio Ortiz-Ambriz"
+---
+
+# Introduction 
+
+Here I want to check that the viscous drag has the correct value. For this, I'll run a simulation of a single particle and then calculate the mean square displacement. 
+
+The diffusion coefficient that we had measured for the particles back in 2019 was $D=0.073 \mu{}\mathrm{m}^2/s$ at a temperature of $T = 300K$. In lammps, the `brownian` fix sets $\gamma$ in the following equation: 
+
+$$d\vec{r} = \frac{\vec{F}}{\gamma}dt + \sqrt{\frac{2k_BT}{\gamma}} dW$$
+
+Where $\gamma$ is the drag coefficient. According to Einstein's relation, $D = \frac{k_BT}{\gamma}$, and we can calculate the value of $\gamma$ by running:
+
+```{python}
+#| label: compute-gamma
+#| echo: True
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from ovito.io import import_file
+import pint as pt
+ureg = pt.UnitRegistry()
+
+D = 0.073 * ureg("um**2/s")
+k_B = 1.380649e-23 * ureg("J/K")
+T = 300*ureg("K")
+
+gamma = (k_B*T/D).to("pg / us")
+print("gamma = ", gamma)
+```
+To run a simulation with a single particle, we use the following setup: 
+```{.LAMMPS}
+### ---preamble--- ###
+units micro 
+atom_style hybrid dipole sphere bond 
+boundary s s s  #stretch boundaries ensure we don't have to unwrap
+neighbor 0.1 nsq # bin neighbor definition doesn't work with single particles 
+pair_style lj/cut/dipole/cut 1 20 
+
+### ---Create Particles and Region--- ###
+region 1 block -27 27 -27 27 -0.1 0.1
+
+create_box 1 1 
+create_atoms 1 single 0.0 0.0 0.0
+pair_coeff 1 1 0.01 2.49451641079295 2.8 20
+group Atoms type 1 
+mass * 1
+```
+
+# Run Script
+The LAMMPS script is run by the following cell: 
+```{python}
+#| label: run_sim
+#| eval: true
+! python3 run_sim.py \
+  --script scripts/s1_test.lmpin \
+  --data-dir data/ \
+  --run-id 2026-08-19-ViscousDragCheck \
+  --notebook notebooks/2026-08-19-ViscousDragCheck.qmd \
+  --params
+```
+![The particle showing free diffusion](../data/2026-08-19-ViscousDragCheck/figures/free_diffusion.gif){width=50%}
+
+# Load data
+
+We now read the data
+
+```{python}
+#| label: load-data
+#| code-fold: true
+#| eval: true
+
+pipeline = import_file("data/2026-08-19-ViscousDragCheck/test.lammpstrj")
+
+# Iterate through all timesteps
+
+trj = []
+for frame in range(pipeline.num_frames):
+    data = pipeline.compute(frame)
+
+    # Access global properties
+    timestep = data.attributes.get("Timestep", frame)
+    cell = data.cell # Simulation box matrices
+
+    # Access atom-wise properties as NumPy arrays
+    atom_ids = data.particles.identifiers.array
+    positions = data.particles.positions.array
+
+    trj.append(
+      pd.DataFrame(
+        {
+          'step': timestep,
+          'ids': atom_ids,
+          'x': positions[:, 0],
+          'y': positions[:, 1],
+          'z': positions[:, 2],
+        }))
+
+trj = pd.concat(trj)
+trj = (
+  trj
+  .set_index(["ids","step"])
+  .sort_index()
+)
+
+display(trj.head())
+
+```
+
+### Analysis
+
+```{python}
+#| label: calculate_msd 
+#| code-fold: true
+
+def calculate_msd(df: pd.DataFrame, dt: float = 1.0, x_col: str = "x", y_col: str = "y") -> pd.DataFrame:
+    """
+    Calculates the Mean Squared Displacement (MSD) over all frame lags
+    for a 2D particle trajectory using NumPy vectorization.
+    
+    Parameters:
+        df (pd.DataFrame): DataFrame containing particle coordinates.
+        dt (float): Time step duration between consecutive frames (default 1.0).
+        x_col (str): Column name for x coordinates.
+        y_col (str): Column name for y coordinates.
+        
+    Returns:
+        pd.DataFrame: Contains 'lag_step', 'tau' (lag time), and 'msd'.
+    """
+    x = df[x_col].to_numpy()
+    y = df[y_col].to_numpy()
+    n_frames = len(df)
+    
+    lags = np.arange(1, n_frames)
+    msd_values = np.empty(len(lags))
+    
+    for i, lag in enumerate(lags):
+        # Slice vectors to find displacement across interval `lag`
+        dx = x[lag:] - x[:-lag]
+        dy = y[lag:] - y[:-lag]
+        
+        # Calculate mean squared distance: < (x(t + tau) - x(t))^2 + (y(t + tau) - y(t))^2 >
+        msd_values[i] = np.mean(dx**2 + dy**2)
+        
+    return pd.DataFrame({
+        "lag_step": lags,
+        "tau": lags * dt,
+        "msd": msd_values
+    })
+
+```
+
+The plot below shows that the MSD has the correct dependence $MSD=4Dt$ for the data produced by the simulation
+
+```{python}
+#| label: plot-msd
+#| fig-cap: "Mean square displacement of the Brownian particle in free difussion"
+#| echo: true
+#| eval: true
+
+mpl.rc("text", usetex=True)
+mpl.rc("figure", dpi = 150)
+
+plt.figure(figsize=[3,2])
+
+msd = calculate_msd(trj, dt = 100e-6*100)
+
+plt.loglog(msd.tau, msd.msd)
+plt.loglog(msd.tau, 4*D.to("um**2/s").magnitude*msd.tau)
+plt.xlabel(r"$\delta t$ [s]")
+plt.ylabel(r"$\left<\delta\vec{r}^2 \right>$ [$\mu{}$m]")
+```
+

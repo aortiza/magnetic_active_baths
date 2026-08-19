@@ -2,7 +2,8 @@
   "listingMap": {
     "index.qmd": [
       "notebooks/*.ipynb",
-      "notebooks/*.qmd"
+      "notebooks/*.qmd",
+      "notebooks"
     ]
   }
 }
