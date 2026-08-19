@@ -1,0 +1,151 @@
+---
+title: "Test of the slit pore simulation"
+date: today
+author: "Antonio Ortiz-Ambriz"
+---
+
+# Introduction 
+
+```{python}
+#| label: header
+#| code-fold: true
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from ovito.io import import_file
+
+mpl.rc("text", usetex=True)
+mpl.rc("figure", dpi = 150)
+```
+
+Here I'll run a simulation of a small version of the slit pore experiment. t 
+
+The LAMMPS script is run by the following cell: 
+```{python}
+! python3 run_sim.py \
+  --script scripts/s2_test.lmpin \
+  --data-dir data/ \
+  --run-id 2026-08-19-Slitpore-Test \
+  --notebook notebooks/2026-08-19-Slitpore-Test.qmd \
+  --params packing=0.262 frequency=3.5e-6
+```
+![Particles in the slitpore simulation](../data/2026-08-19-Slitpore-Test/figures/slitpore_check.gif)
+
+The following python chunk reads the data:
+
+```{python}
+#| label: load-data
+#| code-fold: true
+#| eval: true
+
+pipeline = import_file("data/2026-08-19-Slitpore-Test/test.lammpstrj")
+
+# Iterate through all timesteps
+
+trj = []
+for frame in range(pipeline.num_frames):
+    data = pipeline.compute(frame)
+
+    # Access global properties
+    timestep = data.attributes.get("Timestep", frame)
+    cell = data.cell # Simulation box matrices
+
+    # Access atom-wise properties as NumPy arrays
+    atom_ids = data.particles.identifiers.array
+    positions = data.particles.positions.array
+
+    trj.append(
+      pd.DataFrame(
+        {
+          'step': timestep,
+          'ids': atom_ids,
+          'x': positions[:, 0],
+          'y': positions[:, 1],
+          'z': positions[:, 2],
+        }))
+
+trj = pd.concat(trj)
+trj = (
+  trj
+  .set_index(["ids","step"])
+  .sort_index()
+)
+trj.head()
+```
+
+```{python}
+#| label: calculate_msd 
+#| code-fold: true
+
+def calculate_msd(df: pd.DataFrame, dt: float = 1.0, x_col: str = "x", y_col: str = "y") -> pd.DataFrame:
+    """
+    Calculates the Mean Squared Displacement (MSD) over all frame lags
+    for a 2D particle trajectory using NumPy vectorization.
+    
+    Parameters:
+        df (pd.DataFrame): DataFrame containing particle coordinates.
+        dt (float): Time step duration between consecutive frames (default 1.0).
+        x_col (str): Column name for x coordinates.
+        y_col (str): Column name for y coordinates.
+        
+    Returns:
+        pd.DataFrame: Contains 'lag_step', 'tau' (lag time), and 'msd'.
+    """
+    x = df[x_col].to_numpy()
+    y = df[y_col].to_numpy()
+    n_frames = len(df)
+    
+    lags = np.arange(1, n_frames)
+    msd_values = np.empty(len(lags))
+    
+    for i, lag in enumerate(lags):
+        # Slice vectors to find displacement across interval `lag`
+        dx = x[lag:] - x[:-lag]
+        dy = y[lag:] - y[:-lag]
+        
+        # Calculate mean squared distance: < (x(t + tau) - x(t))^2 + (y(t + tau) - y(t))^2 >
+        msd_values[i] = np.mean(dx**2 + dy**2)
+        
+    return pd.DataFrame({
+        "lag_step": lags,
+        "tau": lags * dt,
+        "msd": msd_values
+    })
+
+```
+
+### Analysis
+Here is a chunk that makes a plot of the average msd of a particle in the slitpore simulation.
+
+```{python}
+#| label: plot-msd
+#| fig-cap: "Mean square displacement of the magnetic particles in a slitpore"
+#| echo: true
+#| eval: true
+
+plt.figure(figsize=[3,2])
+
+msds = []
+for i in trj.index.get_level_values("ids").unique():
+  msds.append(
+    calculate_msd(trj.query("step>10000").loc[i], dt = 100e-6*100))
+  plt.loglog(msds[-1].tau, msds[-1].msd, color = "k", alpha = 0.1)
+
+msds = pd.concat(msds, keys = trj.index.get_level_values("ids").unique())
+
+(
+msds
+  .groupby("tau")
+  .mean()
+  .reset_index()
+  .plot(x = "tau", y = "msd", ax = plt.gca(), color = "r")
+)
+
+
+plt.xlabel(r"$\delta t$ [s]")
+plt.ylabel(r"$\left<\delta\vec{r}^2 \right>$ [$\mu{}$m]")
+```
+
+For the moment, it doesn't seem like we are reproducing the exchange phase. 

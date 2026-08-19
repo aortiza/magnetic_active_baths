@@ -1,8 +1,9 @@
 # Master Experiment Index
 
-*Last updated: 2026-08-19 09:59 | Total simulations logged: 2*
+*Last updated: 2026-08-19 12:01 | Total simulations logged: 3*
 
 | Run ID | Date Started | Status | Parameters | Quarto Notebook |
 | :--- | :--- | :---: | :--- | :---: |
-| `2026-08-19-ViscousDragCheck` | 2026-08-19 09:59:27 | ✅ Completed | - | [2026-08-19-ViscousDragCheck.qmd](notebooks/2026-08-19-ViscousDragCheck.qmd) |
-| `2026-08-08_Test_MagneticField` | 2026-08-18 21:03:46 | ✅ Completed | - | [2026-08-08_Test_MagneticField.qmd](notebooks/2026-08-08_Test_MagneticField.qmd) |
+| `2026-08-19-Slitpore-Test` | 2026-08-19 12:00:53 | ✅ Completed | `packing=0.262`, `frequency=3.5e-06` | [2026-08-19-Slitpore-Test.qmd](notebooks/2026-08-19-Slitpore-Test.qmd) |
+| `2026-08-19-ViscousDragCheck` | 2026-08-19 10:04:05 | ✅ Completed | - | [2026-08-19-ViscousDragCheck.qmd](notebooks/2026-08-19-ViscousDragCheck.qmd) |
+| `2026-08-08_Test_MagneticField` | 2026-08-19 10:03:35 | ✅ Completed | - | [2026-08-08_Test_MagneticField.qmd](notebooks/2026-08-08_Test_MagneticField.qmd) |
