@@ -2,14 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aortiza.github.io/magnetic_active_baths/templates/template.html</loc>
-    <lastmod>2026-08-18T00:25:04.075Z</lastmod>
+    <lastmod>2026-08-18T12:50:33.907Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aortiza.github.io/magnetic_active_baths/notebooks/2026-08-18-SlitPore-Test.html</loc>
+    <lastmod>2026-08-19T03:42:08.058Z</lastmod>
   </url>
   <url>
     <loc>https://aortiza.github.io/magnetic_active_baths/index.html</loc>
-    <lastmod>2026-08-18T00:23:22.660Z</lastmod>
+    <lastmod>2026-08-19T03:00:11.512Z</lastmod>
   </url>
   <url>
     <loc>https://aortiza.github.io/magnetic_active_baths/notebooks/2026-08-08_Test_MagneticField.html</loc>
     <lastmod>2026-08-18T12:41:59.072Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aortiza.github.io/magnetic_active_baths/notebooks/2026-08-19-ViscousDragCheck.html</loc>
+    <lastmod>2026-08-19T16:00:31.418Z</lastmod>
   </url>
 </urlset>
