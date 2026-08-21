@@ -24,12 +24,13 @@ Here I'll run a simulation of a small version of the slit pore experiment. t
 
 The LAMMPS script is run by the following cell: 
 ```{python}
+#| eval: false 
 ! python3 run_sim.py \
   --script scripts/s2_test.lmpin \
   --data-dir data/ \
   --run-id 2026-08-19-Slitpore-Test \
   --notebook notebooks/2026-08-19-Slitpore-Test.qmd \
-  --params packing=0.262 frequency=3.5e-6
+  --params packing=0.262 frequency=4.0e-6
 ```
 ![Particles in the slitpore simulation](../data/2026-08-19-Slitpore-Test/figures/slitpore_check.gif)
 
@@ -125,15 +126,16 @@ Here is a chunk that makes a plot of the average msd of a particle in the slitpo
 #| echo: true
 #| eval: true
 
-plt.figure(figsize=[3,2])
+plt.figure(figsize=[2,2])
 
 msds = []
 for i in trj.index.get_level_values("ids").unique():
   msds.append(
     calculate_msd(trj.query("step>10000").loc[i], dt = 100e-6*100))
-  plt.loglog(msds[-1].tau, msds[-1].msd, color = "k", alpha = 0.1)
+  plt.loglog(msds[-1].tau, msds[-1].msd, color = "plum", alpha = 0.1)
 
 msds = pd.concat(msds, keys = trj.index.get_level_values("ids").unique())
+taus = msds.tau.unique()
 
 (
 msds
@@ -143,9 +145,24 @@ msds
   .plot(x = "tau", y = "msd", ax = plt.gca(), color = "r")
 )
 
+x = np.array([taus[0], taus[0]*10])
+plt.loglog(x, x / taus[0] * 1e2, color = "k")
+plt.text(1e-1/2, 1e3, r"$\tau$")
 
+x = np.array([taus[0], taus[0]*10])
+plt.loglog(x, x**2/taus[0]**2 * 1e-2, 
+    color = "k", zorder = 0)
+plt.text(1e-1, 1e-1, r"$\tau^2$")
+
+x = np.array([taus[0], taus[0]*10])*100
+plt.loglog(
+    x, x**(1/2)/taus[0]**(1/2) * 1e2, 
+    color = "k", zorder = 0)
+plt.text(1, 2.5e3, r"$\tau^\frac{1}{2}$")
+
+plt.gca().get_legend().remove()
 plt.xlabel(r"$\delta t$ [s]")
 plt.ylabel(r"$\left<\delta\vec{r}^2 \right>$ [$\mu{}$m]")
-```
 
-For the moment, it doesn't seem like we are reproducing the exchange phase. 
+```
+It is now more convincing that we found the correct parameters for the active region. There is a lot of dispersion in the diffusion behavior of the particles, with some particles showing ballistic behavior at low times and some particles showing diffusion, but also, with large dispersion on the diffusion coefficient. It's also strange that at longer times we observe subdiffusive behavior. It seems like it's a little slower than subdiffusive.   

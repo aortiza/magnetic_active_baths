@@ -25,7 +25,7 @@ from ovito.io import import_file
 import pint as pt
 ureg = pt.UnitRegistry()
 
-D = 0.073 * ureg("um**2/s")
+D = 0.070 * ureg("um**2/s")
 k_B = 1.380649e-23 * ureg("J/K")
 T = 300*ureg("K")
 

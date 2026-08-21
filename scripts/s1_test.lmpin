@@ -48,7 +48,7 @@ set group all dipole v_mx v_my v_mz
 fix 	1 Atoms set 1 0 group all dipole v_mx v_my v_mz
 
 #fix 	2 Atoms brownian 300 921259 gamma_t 0.001
-fix 	2 Atoms brownian 300 92125 gamma_t 56.739 
+fix 	2 Atoms brownian 300 92125 gamma_t 59.17 
 
 #fix     3 Atoms addforce 0 0 -0.00011264159515495175 
 fix 	6 Atoms wall/lj126 zlo -2.0 0.01 1.247258205396475  1.4 zhi 2.0 0.01 1.247258205396475  1.4  

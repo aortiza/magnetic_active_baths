@@ -63,4 +63,4 @@ timestep 	100.0
 dump 	3 all custom 100 test.lammpstrj id type x	 y	 z mux muy muz
 thermo_style 	custom step atoms
 thermo 	100  
-run 	100000 
+run 	1000000 
