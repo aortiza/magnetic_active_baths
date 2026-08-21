@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Antonio Ortiz-Ambriz">
-<meta name="dcterms.date" content="2026-08-19">
+<meta name="dcterms.date" content="2026-08-20">
 
 <title>Check drag coefficient – Notes on Active Fuel</title>
 <style>
@@ -214,7 +214,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 19, 2026</p>
+      <p class="date">August 20, 2026</p>
     </div>
   </div>
   
@@ -241,14 +241,14 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pint <span class="im">as</span> pt</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>ureg <span class="op">=</span> pt.UnitRegistry()</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="fl">0.073</span> <span class="op">*</span> ureg(<span class="st">"um**2/s"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="fl">0.070</span> <span class="op">*</span> ureg(<span class="st">"um**2/s"</span>)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>k_B <span class="op">=</span> <span class="fl">1.380649e-23</span> <span class="op">*</span> ureg(<span class="st">"J/K"</span>)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="dv">300</span><span class="op">*</span>ureg(<span class="st">"K"</span>)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> (k_B<span class="op">*</span>T<span class="op">/</span>D).to(<span class="st">"pg / us"</span>)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"gamma = "</span>, gamma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>gamma =  56.739000000000004 picogram / microsecond</code></pre>
+<pre><code>gamma =  59.170671428571424 picogram / microsecond</code></pre>
 </div>
 </div>
 <p>To run a simulation with a single particle, we use the following setup:</p>
@@ -359,33 +359,33 @@ mass * 1</code></pre>
 <tr class="odd">
 <th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">1</th>
 <th data-quarto-table-cell-role="th">100</th>
-<td>-0.013136</td>
-<td>-0.008320</td>
-<td>0.017546</td>
+<td>-0.012863</td>
+<td>-0.008147</td>
+<td>0.017182</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">200</th>
-<td>0.003791</td>
-<td>0.018786</td>
-<td>-0.014709</td>
+<td>0.003713</td>
+<td>0.018396</td>
+<td>-0.014404</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">300</th>
-<td>0.023558</td>
-<td>-0.024430</td>
-<td>-0.099910</td>
+<td>0.023069</td>
+<td>-0.023923</td>
+<td>-0.097836</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">400</th>
-<td>-0.034063</td>
-<td>0.023693</td>
-<td>-0.147394</td>
+<td>-0.033356</td>
+<td>0.023201</td>
+<td>-0.144334</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">500</th>
-<td>-0.074819</td>
-<td>0.062951</td>
-<td>-0.199430</td>
+<td>-0.073266</td>
+<td>0.061644</td>
+<td>-0.195290</td>
 </tr>
 </tbody>
 </table>
